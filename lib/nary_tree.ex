@@ -207,7 +207,9 @@ defmodule NaryTree do
       iex> n.name
       "Node"
   """
-  def get(%__MODULE__{nodes: nodes}, id), do: Map.get nodes, id
+  def get(%__MODULE__{nodes: nodes}, id) do
+    Map.get(nodes, id)
+  end
 
   @doc ~S"""
   Put a node into the tree at the specified id.
@@ -535,8 +537,13 @@ defmodule NaryTree do
     iex> Enum.count tree
     3
   """
-  def from_map(%{name: name, content: content} = map), do: tree_from_map map, new(Node.new(name, content)) 
-  def from_map(%{name: name} = map), do: tree_from_map map, new(Node.new(name))
+  def from_map(%{name: name, content: content} = map) do
+    tree_from_map(map, new(Node.new(name, content))) 
+  end
+
+  def from_map(%{name: name} = map) do
+    tree_from_map(map, new(Node.new(name)))
+  end
 
   defp tree_from_map(%{children: children}, tree) do
     Enum.reduce children, tree, fn(child, tree) -> tree_from_map(child, tree.root, tree) end
